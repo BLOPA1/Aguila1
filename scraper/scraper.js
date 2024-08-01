@@ -1,6 +1,8 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
-const fs = require('fs');
+import axios from 'axios';
+import { load } from 'cheerio';
+import { writeFileSync } from 'fs';
+import { setInCache, getFromCache } from './lib/cache.js';
+
 const url = 'https://news.google.com/rss?hl=es&gl=ES';
 
 function inferCountryFromContent(content) {
@@ -19,7 +21,6 @@ function inferCountryFromContent(content) {
     'Cuba': ['Cuba', 'La Habana', 'Santiago de Cuba'],
     'República Dominicana': ['República Dominicana', 'Santo Domingo', 'Santiago'],
     'Puerto Rico': ['Puerto Rico', 'San Juan', 'Ponce'],
-    // Agrega más países y palabras clave según sea necesario
   };
 
   for (const [country, keywords] of Object.entries(countryKeywords)) {
@@ -51,20 +52,27 @@ function inferTopicFromContent(content) {
     }
   }
 
-  return 'General'; // Retorna 'General' si no se encuentra un tópico específico
+  return 'General';
 }
 
 async function scrapeNews() {
   try {
-    const { data } = await axios.get(url);
-    const $ = cheerio.load(data, { xmlMode: true });
+    const cachedNews = getFromCache('news');
+    if (cachedNews) {
+      console.log('Datos recuperados de caché.');
+      return; // No actualizar si los datos están en caché
+    }
+
+    const response = await axios.get(url);
+    const data = response.data;
+    const $ = load(data, { xmlMode: true });
     const news = [];
 
     $('item').each((index, element) => {
       const title = $(element).find('title').text().trim();
       const link = $(element).find('link').text().trim();
       const date = $(element).find('pubDate').text().trim();
-      const content = $(element).text(); // Extraer el contenido del artículo para análisis
+      const content = $(element).text(); // Extraer contenido para revisión
       const country = inferCountryFromContent(content);
       const topic = inferTopicFromContent(content);
 
@@ -73,11 +81,17 @@ async function scrapeNews() {
       }
     });
 
-    fs.writeFileSync('news.json', JSON.stringify(news, null, 2));
+    // Guardar en caché y archivo JSON
+    setInCache('news', news);
+    writeFileSync('news.json', JSON.stringify(news, null, 2));
     console.log('Noticias extraídas y guardadas en news.json');
   } catch (error) {
     console.error('Error al extraer noticias:', error.message);
   }
 }
 
+// Ejecutar el scraper al iniciar
 scrapeNews();
+
+// Exportar la función si es necesario para pruebas o ejecución desde otro módulo
+export default scrapeNews;
