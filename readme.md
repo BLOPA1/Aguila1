@@ -24,16 +24,16 @@ Primero, asegúrate de tener Node.js y npm instalados en tu máquina. Puedes des
 Clona el repositorio con el siguiente comando:
 
 ____________________________________________________________________________
--                                                                          -
--    git clone https://github.com/tu_usuario/nNoticiasAGUILA.git           -
--              cd nombre_del_repositorio                                   -                                                              
+                                                                         
+     git clone https://github.com/tu_usuario/nNoticiasAGUILA.git           
+              cd nombre_del_repositorio                                                                                                 
 ____________________________________________________________________________
 
 3. Instalar Dependencias
 Instala las dependencias necesarias con:
 
 ____________________________________
--   npm install                    -
+     npm install                    
 ____________________________________
 
 
@@ -49,7 +49,7 @@ Frontend
 Para iniciar el servidor de desarrollo y probar la aplicación, usa el siguiente comando:
 
 ____________________________________
--   npm run dev                    -
+     npm run dev                    
 ____________________________________
 
 
