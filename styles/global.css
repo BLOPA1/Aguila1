@@ -1,0 +1,10 @@
+/* styles/globals.css */
+body, html {
+    background-color: #000;
+    color: #FFF;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
