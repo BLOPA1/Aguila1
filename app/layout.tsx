@@ -1,5 +1,5 @@
 // app/layout.tsx
-import 'C:/Users/Pablo/Desktop/Aguila/styles/global.css'; // Si estás usando un archivo CSS global
+import '../styles/global.css'; // Si estás usando un archivo CSS global
 
 export const metadata = {
   title: 'Noticias',

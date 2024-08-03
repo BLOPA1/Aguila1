@@ -1,4 +1,4 @@
-// File: C:\Users\Pablo\Desktop\Aguila\app\page.js
+// File: C:\Users\Pablo\Desktop\Aguila-new\app\page.js
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
